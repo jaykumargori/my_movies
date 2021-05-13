@@ -32,14 +32,15 @@ class _TestState extends State<Test> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("My Movies"),
+        title: Text("Popular Movies"),
         centerTitle: true,
         elevation: 0,
+        backgroundColor: Colors.black,
+        brightness: Brightness.dark,
       ),
       body: Container(
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         color: Colors.black,
         child: GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -48,10 +49,12 @@ class _TestState extends State<Test> {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10),
             itemCount: _movielist.length,
+            shrinkWrap: true,
+            physics:
+                BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
             itemBuilder: (context, index) {
-              return Container(
-                height: MediaQuery.of(context).size.height * 0.2,
-                width: MediaQuery.of(context).size.width,
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: InkWell(
                   onTap: () {
                     Navigator.push(
@@ -61,13 +64,21 @@ class _TestState extends State<Test> {
                       ),
                     );
                   },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.network(
-                        'https://image.tmdb.org/t/p/w342${_movielist[index].posterPath}',
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            'https://image.tmdb.org/t/p/w342${_movielist[index].posterPath}'),
                         fit: BoxFit.fill,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 20.0,
+                          offset: Offset(0, 3.0),
+                          color: Colors.grey.withOpacity(0.3),
+                        )
+                      ],
                     ),
                   ),
                 ),
